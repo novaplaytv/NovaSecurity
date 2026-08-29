@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NovaPlay | Security Shield</title>
+    <title>NovaApps | Security Shield</title>
     <link rel="icon" type="image/webp" href="https://raw.githubusercontent.com/novaplaytv/novaimg/main/novasplash.webp">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -30,6 +30,10 @@
         .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; font-weight: 900; font-size: 20px; }
         .brand img { width: 32px; border-radius: 6px; }
 
+        .nav-links { display: flex; gap: 15px; align-items: center; }
+        .nav-links a { color: #ccc; text-decoration: none; font-size: 14px; font-weight: 600; transition: 0.2s; padding: 10px 15px; border-radius: 10px; }
+        .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+
         /* Main Layout */
         .app-container { max-width: 1400px; margin: calc(var(--nav-height) + 40px) auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         @media (max-width: 1100px) { .app-container { grid-template-columns: 1fr; } }
@@ -51,11 +55,11 @@
 
         /* Forms */
         .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase; }
-        input { width: 100%; padding: 14px 18px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; color: #fff; font-size: 14px; }
+        label { display: block; margin-bottom: 8px; font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        input { width: 100%; padding: 14px 18px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; color: #fff; font-size: 14px; transition: 0.2s; }
         input:focus { border-color: var(--primary); }
 
-        .btn { padding: 12px 20px; border-radius: 12px; border: 0; cursor: pointer; font-weight: 800; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .btn { padding: 12px 20px; border-radius: 12px; border: 0; cursor: pointer; font-weight: 800; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; white-space: nowrap; }
         .btn-primary { background: var(--primary); color: #fff; }
         .btn-primary:hover { transform: scale(1.05); filter: brightness(1.1); }
         .btn-danger { background: var(--error); color: #fff; }
@@ -68,11 +72,12 @@
         .log-item:hover { border-color: var(--primary); }
         .log-item h4 { font-size: 12px; word-break: break-all; margin-bottom: 10px; color: #ccc; }
         .log-item .date { font-size: 10px; color: var(--text-muted); }
-        .log-new-indicator { position: absolute; top: 10px; right: 10px; width: 8px; height: 8px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); display: none; }
 
         /* Auth View */
         #auth-view { position: fixed; inset: 0; background: var(--bg); z-index: 10001; display: flex; justify-content: center; align-items: center; }
         .auth-card { width: 400px; padding: 50px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 35px; box-shadow: 0 30px 80px rgba(0,0,0,0.6); text-align: center; }
+        .status { margin-top: 15px; padding: 14px; border-radius: 12px; font-size: 13px; font-weight: 800; display: none; text-align: center; }
+        .status.error { background: rgba(239,68,68,0.1); color: var(--error); border: 1px solid var(--error); }
 
         .hidden { display: none !important; }
         ::-webkit-scrollbar { width: 6px; }
@@ -85,29 +90,35 @@
 <nav>
     <a href="#" class="brand">
         <img src="https://raw.githubusercontent.com/novaplaytv/novaimg/main/novasplash.webp" alt="Logo">
-        NovaPlay Security Shield
+        NovaApps Security
     </a>
-    <div style="display: flex; gap: 20px; align-items: center;">
-        <span id="system-status" class="badge badge-green">Sistema Protegido</span>
-        <button class="btn btn-primary" onclick="cerrarSesion()">Cerrar Sesión</button>
+    <div class="nav-links">
+        <a href="https://novaplaytv.github.io/NovaApps/">TIENDA</a>
+        <a href="https://novaplaytv.github.io/panel-canales/">CANALES</a>
+        <button class="btn btn-primary" id="navLogout" style="display:none;" onclick="cerrarSesion()">SALIR</button>
     </div>
 </nav>
 
 <div id="auth-view">
     <div class="auth-card">
-        <h2 style="margin-bottom:30px; font-weight:900; font-size: 28px;">Staff Only</h2>
+        <h2 style="margin-bottom:30px; font-weight:900; font-size: 28px;">Panel de Seguridad</h2>
         <div class="form-group" style="text-align: left;">
-            <label>Contraseña Maestra</label>
-            <input type="password" id="master-pass" placeholder="••••••••">
+            <label>Usuario</label>
+            <input type="text" id="username" placeholder="Usuario Staff">
         </div>
-        <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="verificarAcceso()">ACCEDER AL PANEL</button>
+        <div class="form-group" style="text-align: left;">
+            <label>Contraseña</label>
+            <input type="password" id="password" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" id="loginButton" style="width:100%; justify-content:center; margin-top:10px; padding: 18px;" onclick="iniciarSesion()">ENTRAR AL PANEL</button>
+        <div id="loginStatus" class="status"></div>
     </div>
 </div>
 
 <div class="app-container hidden" id="main-panel">
     <!-- Active Users Table -->
     <div class="card">
-        <h2><i class="fas fa-users"></i> Sesiones Activas</h2>
+        <h2><i class="fas fa-users"></i> Usuarios en Tiempo Real</h2>
         <div class="table-container">
             <table>
                 <thead>
@@ -150,9 +161,9 @@
     </div>
 
     <!-- Log Monitor -->
-    <div class="card" style="grid-column: 1 / -1;">
+    <div class="card" style="grid-column: 1 / -1; margin-top: 20px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2><i class="fas fa-file-medical-alt"></i> Monitor de Logs (Supabase Storage)</h2>
+            <h2><i class="fas fa-file-medical-alt"></i> Monitor de Logs (Reportes de Emergencia)</h2>
             <button class="btn btn-primary" onclick="loadLogs()"><i class="fas fa-sync"></i> Refrescar</button>
         </div>
         <div class="logs-grid" id="logs-container">
@@ -161,24 +172,74 @@
     </div>
 </div>
 
+<div id="toast-container"></div>
+
 <script>
     const SUPABASE_URL = "https://mrghnngupolsgatcmevw.supabase.co";
     const SUPABASE_KEY = "sb_publishable_56epBVQKxWC5_OF0O8x0pA_gxDsxMbQ";
+    const API_URL_AUTH = `${SUPABASE_URL}/functions/v1/actualizar-canales`;
 
-    let isLogged = localStorage.getItem("nova_shield_auth") === "true";
+    let sessionToken = localStorage.getItem("novaplay_session_token") || "";
 
-    function verificarAcceso() {
-        const pass = document.getElementById('master-pass').value;
-        if (pass === "MSGT-SECURITY-2026") {
-            localStorage.setItem("nova_shield_auth", "true");
+    async function fetchJSON(body, usarSesion = false) {
+        const headers = { "Content-Type": "application/json" };
+        if (usarSesion && sessionToken) headers.Authorization = "Bearer " + sessionToken;
+        try {
+            const response = await fetch(API_URL_AUTH, {
+                method: "POST",
+                headers,
+                body: JSON.stringify(body)
+            });
+            const data = await response.json().catch(() => ({ error: "Respuesta inválida." }));
+            return { response, data };
+        } catch (e) {
+            return { response: { ok: false }, data: { error: "Error de red." } };
+        }
+    }
+
+    async function restaurarSesion() {
+        if (sessionToken) {
+            UI_MostrarPanel();
+            loadUsers();
+            loadBlacklist();
+            loadLogs();
+            setInterval(loadLogs, 60000);
+        }
+    }
+
+    function UI_MostrarPanel() {
+        document.getElementById("auth-view").classList.add("hidden");
+        document.getElementById("main-panel").classList.remove("hidden");
+        document.getElementById("navLogout").style.display = 'block';
+    }
+
+    async function iniciarSesion() {
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const btn = document.getElementById("loginButton");
+        if (!username || !password) return;
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> VERIFICANDO...';
+        const { response, data } = await fetchJSON({ action: "login", username, password });
+
+        if (response.ok && data.token) {
+            sessionToken = data.token;
+            localStorage.setItem("novaplay_session_token", sessionToken);
+            UI_MostrarPanel();
             location.reload();
         } else {
-            alert("Acceso Denegado");
+            const el = document.getElementById("loginStatus");
+            el.className = "status error";
+            el.textContent = "Acceso denegado.";
+            el.style.display = "block";
+            btn.disabled = false;
+            btn.textContent = 'ENTRAR AL PANEL';
         }
     }
 
     function cerrarSesion() {
-        localStorage.removeItem("nova_shield_auth");
+        localStorage.removeItem("novaplay_session_token");
         location.reload();
     }
 
@@ -241,9 +302,6 @@
     }
 
     async function loadLogs() {
-        // Consultar la lista de archivos en el bucket Logs_NovaPlay vía API REST de Storage
-        // Nota: El listado de objetos requiere el Service Role Key o permisos públicos de lectura.
-        // Asumimos que los archivos son públicos para listado en este dashboard privado.
         try {
             const res = await fetch(`${SUPABASE_URL}/storage/v1/object/list/Logs_NovaPlay`, {
                 method: "POST",
@@ -255,11 +313,10 @@
 
             container.innerHTML = data.map(log => `
                 <div class="log-item">
-                    <div class="log-new-indicator"></div>
                     <h4>${log.name}</h4>
                     <div class="date">${new Date(log.created_at).toLocaleString()}</div>
                     <a href="${SUPABASE_URL}/storage/v1/object/public/Logs_NovaPlay/${log.name}" target="_blank" class="btn btn-ghost" style="margin-top:10px; width:100%; justify-content:center; padding:8px; font-size:11px;">
-                        <i class="fas fa-download"></i> Ver Log
+                        <i class="fas fa-download"></i> Ver Reporte
                     </a>
                 </div>
             `).join('');
@@ -273,14 +330,8 @@
         alert("ID Copiado: " + text);
     }
 
-    if (isLogged) {
-        document.getElementById('auth-view').classList.add('hidden');
-        document.getElementById('main-panel').classList.remove('hidden');
-        loadUsers();
-        loadBlacklist();
-        loadLogs();
-        setInterval(loadLogs, 60000); // Monitoreo automático cada minuto
-    }
+    document.getElementById("password").addEventListener("keydown", e => { if (e.key === "Enter") iniciarSesion(); });
+    restaurarSesion();
 </script>
 
 </body>

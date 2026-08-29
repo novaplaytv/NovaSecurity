@@ -157,10 +157,13 @@
         document.getElementById('users-tbody').innerHTML = users.map(u => `
             <tr>
                 <td><b>${u.usuario}</b></td>
-                <td><code>${u.novaplay_id}</code></td>
-                <td><code style="color:var(--primary)">${u.firma_hardware || 'N/A'}</code></td>
+                <td><code title="ID Hardware">${u.novaplay_id}</code></td>
+                <td><code style="color:var(--primary)" title="Firma Blindada">${u.firma_hardware || 'N/A'}</code></td>
                 <td>${u.modelo_dispositivo}</td>
-                <td><button class="btn-icon" onclick="addBlacklist('${u.firma_hardware || u.novaplay_id}')" title="Banear"><i class="fas fa-user-slash"></i></button></td>
+                <td>
+                    <button class="btn-icon" onclick="addBlacklist('${u.novaplay_id}')" title="Banear por ID"><i class="fas fa-id-badge"></i></button>
+                    <button class="btn-icon" onclick="addBlacklist('${u.firma_hardware}')" title="Banear por Firma" ${u.firma_hardware ? '' : 'disabled'}><i class="fas fa-fingerprint" style="color:var(--primary)"></i></button>
+                </td>
             </tr>
         `).join('');
 
@@ -189,9 +192,13 @@
     async function addBlacklist(id = null) {
         const val = id || document.getElementById('blacklist-id').value.trim();
         if (!val) return;
-        await supabaseRequest("blacklist", "POST", { novaplay_id: val });
-        alert("Bloqueado: " + val);
-        loadData();
+        const res = await supabaseRequest("blacklist", "POST", { novaplay_id: val });
+        if (res.error) {
+            alert("Error al bloquear: " + (res.error.message || "Permiso denegado"));
+        } else {
+            alert("Baneado con éxito: " + val);
+            loadData();
+        }
     }
 
     async function removeBlacklist(id) {

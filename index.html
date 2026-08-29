@@ -60,6 +60,8 @@
         .btn-danger { background: var(--error); color: #fff; }
         .btn-icon { background: none; border: none; color: inherit; cursor: pointer; padding: 5px; opacity: 0.6; }
         .btn-icon:hover { opacity: 1; color: var(--primary); }
+        .btn-delete-text { background: rgba(239,68,68,0.1); color: var(--error); padding: 5px 12px; border-radius: 8px; font-size: 11px; font-weight: 900; transition: 0.2s; border: 1px solid transparent; }
+        .btn-delete-text:hover { background: var(--error); color: #fff; border-color: var(--error); }
 
         /* Log Monitor */
         .logs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; margin-top: 20px; }
@@ -81,6 +83,7 @@
         <a href="https://novaplaytv.github.io/">INICIO</a>
         <a href="https://novaplaytv.github.io/novaimg/actualizar-icono/">ICONOS</a>
         <a href="https://novaplaytv.github.io/panel-canales/">CANALES</a>
+        <a href="#" onclick="loadData(); return false;" style="color: var(--success); font-weight: 800;"><i class="fas fa-sync-alt"></i> RECARGAR</a>
         <button class="btn btn-primary" id="navLogout" style="display:none;" onclick="cerrarSesion()">SALIR</button>
     </div>
 </nav>
@@ -96,7 +99,7 @@
 
 <div class="app-container hidden" id="main-panel">
     <div class="card">
-        <h2><i class="fas fa-bolt"></i> Sesiones Activas (Detección de Firma)</h2>
+        <h2><i class="fas fa-bolt"></i> Sesiones Activas</h2>
         <div class="table-container">
             <table>
                 <thead><tr><th>Usuario</th><th>ID Hardware</th><th>Firma Hardware</th><th>Modelo</th><th>Acción</th></tr></thead>
@@ -107,7 +110,7 @@
 
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px;">
         <div class="card">
-            <h2><i class="fas fa-user-slash"></i> Lista Negra</h2>
+            <h2><i class="fas fa-user-slash"></i> Lista Negra (Bloqueos)</h2>
             <div style="display:flex; gap:10px; margin-bottom:20px;">
                 <input type="text" id="blacklist-id" placeholder="ID o Firma..." style="flex:1;">
                 <button class="btn btn-danger" onclick="addBlacklist()">BLOQUEAR</button>
@@ -124,9 +127,7 @@
 </div>
 
 <script>
-    const SUPABASE_URL = "https://mrghnngupolsgatcmevw.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_56epBVQKxWC5_OF0O8x0pA_gxDsxMbQ";
-    const API_URL = `${SUPABASE_URL}/functions/v1/actualizar-canales`;
+    const API_URL = "https://mrghnngupolsgatcmevw.supabase.co/functions/v1/actualizar-canales";
     let sessionToken = localStorage.getItem("novaplay_session_token") || "";
 
     async function req(body) {
@@ -152,13 +153,13 @@
         document.getElementById("main-panel").classList.remove("hidden");
         document.getElementById("navLogout").style.display = "block";
 
-        // Cargar Usuarios
-        const users = await supabaseRequest("registro_versiones", "GET", null, "?select=*&order=fecha_actualizacion.desc");
+        // Cargar Usuarios vía Función
+        const users = await req({ action: "seguridad_listar_usuarios" });
         document.getElementById('users-tbody').innerHTML = users.map(u => `
             <tr>
                 <td><b>${u.usuario}</b></td>
-                <td><code title="ID Hardware">${u.novaplay_id}</code></td>
-                <td><code style="color:var(--primary)" title="Firma Blindada">${u.firma_hardware || 'N/A'}</code></td>
+                <td><code>${u.novaplay_id}</code></td>
+                <td><code style="color:var(--primary)">${u.firma_hardware || 'N/A'}</code></td>
                 <td>${u.modelo_dispositivo}</td>
                 <td>
                     <button class="btn-icon" onclick="addBlacklist('${u.novaplay_id}')" title="Banear por ID"><i class="fas fa-id-badge"></i></button>
@@ -167,13 +168,18 @@
             </tr>
         `).join('');
 
-        // Cargar Blacklist
-        const black = await supabaseRequest("blacklist", "GET", null, "?select=*&order=created_at.desc");
+        // Cargar Blacklist vía Función
+        const black = await req({ action: "seguridad_listar_blacklist" });
         document.getElementById('blacklist-tbody').innerHTML = black.map(b => `
-            <tr><td><code>${b.novaplay_id}</code></td><td><button class="btn-icon" onclick="removeBlacklist(${b.id})"><i class="fas fa-trash"></i></button></td></tr>
+            <tr>
+                <td><code>${b.novaplay_id}</code></td>
+                <td>
+                    <button class="btn-delete-text" onclick="removeBlacklist(${b.id})" title="Remover de la lista negra">BORRAR</button>
+                </td>
+            </tr>
         `).join('');
 
-        // Cargar Logs
+        // Cargar Logs vía Función
         const logs = await req({ action: "listar_logs" });
         document.getElementById('logs-container').innerHTML = logs.map(l => `
             <div class="log-item">
@@ -184,26 +190,24 @@
     }
 
     async function supabaseRequest(table, method, body = null, query = "") {
-        const h = { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" };
-        const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query}`, { method, headers: h, body: body ? JSON.stringify(body) : null });
+        const h = { "apikey": "sb_publishable_56epBVQKxWC5_OF0O8x0pA_gxDsxMbQ", "Authorization": "Bearer sb_publishable_56epBVQKxWC5_OF0O8x0pA_gxDsxMbQ", "Content-Type": "application/json" };
+        const r = await fetch(`https://mrghnngupolsgatcmevw.supabase.co/rest/v1/${table}${query}`, { method, headers: h, body: body ? JSON.stringify(body) : null });
         return await r.json();
     }
 
     async function addBlacklist(id = null) {
         const val = id || document.getElementById('blacklist-id').value.trim();
         if (!val) return;
-        const res = await supabaseRequest("blacklist", "POST", { novaplay_id: val });
-        if (res.error) {
-            alert("Error al bloquear: " + (res.error.message || "Permiso denegado"));
-        } else {
-            alert("Baneado con éxito: " + val);
-            loadData();
-        }
+        const res = await req({ action: "seguridad_add_blacklist", novaplay_id: val });
+        if (res.success) { alert("Baneado con éxito"); loadData(); }
+        else alert("Error al banear");
     }
 
     async function removeBlacklist(id) {
-        await supabaseRequest("blacklist", "DELETE", null, `?id=eq.${id}`);
-        loadData();
+        if (!confirm("¿Desea sacar este dispositivo de la lista negra?")) return;
+        const res = await req({ action: "seguridad_remove_blacklist", id_db: id });
+        if (res.success) loadData();
+        else alert("Error al eliminar");
     }
 
     if (sessionToken) loadData();

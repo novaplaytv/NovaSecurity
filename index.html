@@ -142,14 +142,14 @@
     <div class="card">
         <h2><i class="fas fa-user-slash"></i> Lista Negra (Baneos)</h2>
         <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-            <input type="text" id="blacklist-id" placeholder="Pegar ID de Hardware aquí...">
+            <input type="text" id="blacklist-id" placeholder="Pegar ID o Firma aquí...">
             <button class="btn btn-danger" onclick="addBlacklist()">BLOQUEAR ID</button>
         </div>
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th>ID Hardware</th>
+                        <th>ID Hardware / Firma</th>
                         <th>Baneado el</th>
                         <th>Acciones</th>
                     </tr>
@@ -164,7 +164,7 @@
     <!-- Log Monitor -->
     <div class="card" style="grid-column: 1 / -1; margin-top: 20px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2><i class="fas fa-file-medical-alt"></i> Monitor de Logs (Reportes de Emergencia)</h2>
+            <h2><i class="fas fa-file-medical-alt"></i> Monitor de Logs (Vía Puente Seguro)</h2>
             <button class="btn btn-primary" onclick="loadLogs()"><i class="fas fa-sync"></i> Refrescar</button>
         </div>
         <div class="logs-grid" id="logs-container">
@@ -180,6 +180,9 @@
     const SUPABASE_KEY = "sb_publishable_56epBVQKxWC5_OF0O8x0pA_gxDsxMbQ";
     const API_URL_AUTH = `${SUPABASE_URL}/functions/v1/actualizar-canales`;
 
+    // PROYECTO DE LOGS (OCULTO EN EL SERVIDOR)
+    const LOGS_STORAGE_URL = "https://wxlhqitmigmkpfcsqyzt.supabase.co/storage/v1/object/public/Logs_NovaPlay";
+
     let sessionToken = localStorage.getItem("novaplay_session_token") || "";
 
     async function fetchJSON(body, usarSesion = false) {
@@ -191,7 +194,7 @@
                 headers,
                 body: JSON.stringify(body)
             });
-            const data = await response.json().catch(() => ({ error: "Respuesta inválida." }));
+            const data = await response.json();
             return { response, data };
         } catch (e) {
             return { response: { ok: false }, data: { error: "Error de red." } };
@@ -227,13 +230,10 @@
         if (response.ok && data.token) {
             sessionToken = data.token;
             localStorage.setItem("novaplay_session_token", sessionToken);
-            UI_MostrarPanel();
             location.reload();
         } else {
-            const el = document.getElementById("loginStatus");
-            el.className = "status error";
-            el.textContent = "Acceso denegado.";
-            el.style.display = "block";
+            document.getElementById("loginStatus").textContent = "Acceso denegado.";
+            document.getElementById("loginStatus").style.display = "block";
             btn.disabled = false;
             btn.textContent = 'ENTRAR AL PANEL';
         }
@@ -245,45 +245,31 @@
     }
 
     async function supabaseRequest(table, method, body = null, query = "") {
-        const headers = {
-            "apikey": SUPABASE_KEY,
-            "Authorization": `Bearer ${SUPABASE_KEY}`,
-            "Content-Type": "application/json",
-            "Prefer": "return=representation"
-        };
-        const options = { method, headers };
-        if (body) options.body = JSON.stringify(body);
-
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query}`, options);
+        const headers = { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json", "Prefer": "return=representation" };
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query}`, { method, headers, body: body ? JSON.stringify(body) : null });
         return await res.json();
     }
 
     async function loadUsers() {
         const data = await supabaseRequest("registro_versiones", "GET", null, "?select=*&order=fecha_actualizacion.desc");
-        const tbody = document.getElementById('users-tbody');
-        tbody.innerHTML = data.map(u => `
+        document.getElementById('users-tbody').innerHTML = data.map(u => `
             <tr>
                 <td><b>${u.usuario}</b></td>
                 <td><code style="color:var(--primary)">${u.novaplay_id}</code></td>
                 <td>${u.modelo_dispositivo}</td>
                 <td><span class="badge badge-green">${u.version_app}</span></td>
-                <td>
-                    <button class="btn-icon" onclick="copyToClipboard('${u.novaplay_id}')" title="Copiar ID"><i class="fas fa-copy"></i></button>
-                </td>
+                <td><button class="btn-icon" onclick="copyToClipboard('${u.novaplay_id}')"><i class="fas fa-copy"></i></button></td>
             </tr>
         `).join('');
     }
 
     async function loadBlacklist() {
         const data = await supabaseRequest("blacklist", "GET", null, "?select=*&order=created_at.desc");
-        const tbody = document.getElementById('blacklist-tbody');
-        tbody.innerHTML = data.map(b => `
+        document.getElementById('blacklist-tbody').innerHTML = data.map(b => `
             <tr>
                 <td><code>${b.novaplay_id}</code></td>
                 <td class="date">${new Date(b.created_at).toLocaleString()}</td>
-                <td>
-                    <button class="btn-icon" onclick="removeBlacklist(${b.id})" title="Desbloquear"><i class="fas fa-trash-alt"></i></button>
-                </td>
+                <td><button class="btn-icon" onclick="removeBlacklist(${b.id})"><i class="fas fa-trash-alt"></i></button></td>
             </tr>
         `).join('');
     }
@@ -297,43 +283,34 @@
     }
 
     async function removeBlacklist(id) {
-        if (!confirm("¿Desea desbloquear este dispositivo?")) return;
-        await supabaseRequest("blacklist", "DELETE", null, `?id=eq.${id}`);
-        loadBlacklist();
+        if (confirm("¿Desbloquear dispositivo?")) {
+            await supabaseRequest("blacklist", "DELETE", null, `?id=eq.${id}`);
+            loadBlacklist();
+        }
     }
 
     async function loadLogs() {
-        try {
-            const res = await fetch(`${SUPABASE_URL}/storage/v1/object/list/Logs_NovaPlay`, {
-                method: "POST",
-                headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" },
-                body: JSON.stringify({ prefix: "", limit: 100, sortBy: { column: "created_at", order: "desc" } })
-            });
-            const data = await res.json();
-            const container = document.getElementById('logs-container');
-
-            container.innerHTML = data.map(log => `
+        // Usamos la acción 'listar_logs' de tu función de Supabase (Puente Seguro)
+        const { response, data } = await fetchJSON({ action: "listar_logs" }, true);
+        if (response.ok) {
+            document.getElementById('logs-container').innerHTML = data.map(log => `
                 <div class="log-item">
                     <h4>${log.name}</h4>
                     <div class="date">${new Date(log.created_at).toLocaleString()}</div>
-                    <a href="${SUPABASE_URL}/storage/v1/object/public/Logs_NovaPlay/${log.name}" target="_blank" class="btn btn-ghost" style="margin-top:10px; width:100%; justify-content:center; padding:8px; font-size:11px;">
+                    <a href="${LOGS_STORAGE_URL}/${log.name}" target="_blank" class="btn btn-ghost" style="margin-top:10px; width:100%; justify-content:center; padding:8px; font-size:11px;">
                         <i class="fas fa-download"></i> Ver Reporte
                     </a>
                 </div>
             `).join('');
-        } catch (e) {
-            console.error("Error cargando logs", e);
         }
     }
 
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text);
-        alert("ID Copiado: " + text);
+        alert("Copiado: " + text);
     }
 
-    document.getElementById("password").addEventListener("keydown", e => { if (e.key === "Enter") iniciarSesion(); });
     restaurarSesion();
 </script>
-
 </body>
 </html>

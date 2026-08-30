@@ -171,7 +171,10 @@
 
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px; width: 100%; max-width: 1300px;">
         <div class="card">
-            <h2><i class="fas fa-user-slash"></i> Lista Negra</h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
+                <h2 style="margin:0;"><i class="fas fa-user-slash"></i> Lista Negra</h2>
+                <button class="btn-danger-text" onclick="addBlacklist('')" style="font-size:10px; padding:8px 15px;">+ AÑADIR MANUAL</button>
+            </div>
             <div class="table-container">
                 <table><thead><tr><th>ID / Firma Baneada</th><th>Acción</th></tr></thead><tbody id="blacklist-tbody"></tbody></table>
             </div>
@@ -359,10 +362,27 @@
     }
 
     async function addBlacklist(id) {
-        const val = id || "";
+        if (!id) {
+            openModal("Banear Manual", "Ingrese el ID o Firma a bloquear:", (manualId) => {
+                if (!manualId) return;
+                // Chaining second modal for reason
+                setTimeout(() => {
+                    openModal("Motivo del Bloqueo", "Indique el motivo del baneo:", async (reason) => {
+                        if (!reason) return;
+                        const res = await req({ action: "seguridad_add_blacklist", novaplay_id: manualId, reason: reason });
+                        if (res.success) {
+                            novaToast("Dispositivo bloqueado");
+                            loadData();
+                        } else alert("Error");
+                    }, true, "Actividad sospechosa detectada.");
+                }, 300);
+            }, true, "");
+            return;
+        }
+
         openModal("Bloquear Dispositivo", "Indique el motivo del baneo:", async (reason) => {
             if (!reason) return;
-            const res = await req({ action: "seguridad_add_blacklist", novaplay_id: val, reason: reason });
+            const res = await req({ action: "seguridad_add_blacklist", novaplay_id: id, reason: reason });
             if (res.success) {
                 novaToast("Dispositivo bloqueado");
                 loadData();

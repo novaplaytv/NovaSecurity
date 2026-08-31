@@ -53,7 +53,7 @@
         .btn-logout { background: var(--error); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
 
         /* Dropdown de Administración Premium - FIX DEFINITIVO */
-        .admin-menu { position: relative; display: none; padding: 10px 0; margin: -10px 0; }
+        .admin-menu { position: relative; display: flex; align-items: center; height: var(--nav-height); padding: 0 10px; }
         .btn-admin { background: #fff; color: #000; font-weight: 900; border: none; cursor: pointer; padding: 10px 20px; border-radius: 12px; font-size: 13px; display: flex; align-items: center; gap: 10px; transition: 0.2s; position: relative; z-index: 10002; }
         .btn-admin:hover { background: var(--primary); color: #fff; box-shadow: 0 0 20px rgba(229,9,20,0.4); }
         .dropdown-content { position: absolute; top: 100%; right: 0; background: var(--card-bg); min-width: 260px; border-radius: 20px; border: 1px solid var(--border); overflow: hidden; display: none; flex-direction: column; box-shadow: 0 20px 50px rgba(0,0,0,0.8); z-index: 10001; margin-top: 5px; }
@@ -255,7 +255,6 @@
         document.getElementById("auth-view").classList.add("hidden");
         document.getElementById("main-panel").classList.remove("hidden");
         document.getElementById("navLogin").style.display = 'none';
-        document.getElementById("adminMenu").style.display = 'block';
         document.getElementById("navReload").style.display = 'block';
     }
 
@@ -263,7 +262,6 @@
         document.getElementById("auth-view").classList.remove("hidden");
         document.getElementById("main-panel").classList.add("hidden");
         document.getElementById("navLogin").style.display = 'block';
-        document.getElementById("adminMenu").style.display = 'none';
         document.getElementById("navReload").style.display = 'none';
     }
 

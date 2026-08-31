@@ -236,6 +236,25 @@
 <script>
     const API_URL = "https://mrghnngupolsgatcmevw.supabase.co/functions/v1/actualizar-canales";
     let sessionToken = localStorage.getItem("novaplay_session_token") || "";
+    let deviceDict = {};
+
+    async function loadDeviceDict() {
+        try {
+            const res = await fetch('devices.json?t=' + Date.now());
+            if (res.ok) deviceDict = await res.json();
+        } catch (e) { console.error("Error cargando diccionario de dispositivos:", e); }
+    }
+
+    function traducirModelo(cod) {
+        if (!cod) return "Desconocido";
+        // Buscar en el diccionario (Google Play List)
+        if (deviceDict[cod]) return deviceDict[cod];
+
+        // Lógica para Xiaomi genéricos (Códigos de 10-12 caracteres que suelen ser Xiaomi)
+        if (/^[0-9]{2,}[A-Z]{2,}[0-9]+[GCI]$/.test(cod)) return "Xiaomi (" + cod + ")";
+
+        return cod;
+    }
 
     function novaToast(message) {
         const toast = document.createElement("div");
@@ -297,8 +316,13 @@
     async function loadData() {
         if (!sessionToken) return;
 
-        // Cargar Usuarios
-        let users = await req({ action: "seguridad_listar_usuarios" });
+        // Cargar Diccionario y Usuarios en paralelo
+        const [dictRes, usersRes] = await Promise.all([
+            loadDeviceDict(),
+            req({ action: "seguridad_listar_usuarios" })
+        ]);
+
+        let users = usersRes;
 
         // Ordenar por Versión (Semántico: más nuevas primero)
         if (Array.isArray(users)) {
@@ -320,7 +344,13 @@
                 <td><b>${u.usuario}</b></td>
                 <td><code>${u.novaplay_id}</code></td>
                 <td><code style="color:var(--primary)">${u.firma_hardware || 'N/A'}</code></td>
-                <td>${u.modelo_dispositivo} <br><small>${u.version_app}</small></td>
+                <td>
+                    <div style="display:flex; align-items:center; gap:8px; justify-content:center;">
+                        <b>${traducirModelo(u.modelo_dispositivo)}</b>
+                        <a href="https://www.google.com/search?q=${u.modelo_dispositivo}+specs+xiaomi" target="_blank" title="Buscar especificaciones" style="color:var(--text-muted); font-size:10px;"><i class="fas fa-search"></i></a>
+                    </div>
+                    <small>${u.version_app}</small>
+                </td>
                 <td>
                     <button class="btn-icon" onclick="addBlacklist('${u.novaplay_id}')" title="Banear ID"><i class="fas fa-id-badge"></i></button>
                     <button class="btn-icon" onclick="addBlacklist('${u.firma_hardware}')" title="Banear Firma" ${u.firma_hardware ? '' : 'disabled'}><i class="fas fa-fingerprint"></i></button>

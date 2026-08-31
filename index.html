@@ -352,10 +352,7 @@
                 <td><code>${u.novaplay_id}</code></td>
                 <td><code style="color:var(--primary)">${u.firma_hardware || 'N/A'}</code></td>
                 <td>
-                    <div style="display:flex; align-items:center; gap:8px; justify-content:center;">
-                        <b>${traducirModelo(u.modelo_dispositivo)}</b>
-                        <a href="https://www.google.com/search?q=${u.modelo_dispositivo}+specs+smartphone" target="_blank" title="Buscar especificaciones" style="color:var(--text-muted); font-size:10px;"><i class="fas fa-search"></i></a>
-                    </div>
+                    <b>${traducirModelo(u.modelo_dispositivo)}</b><br>
                     <small>${u.version_app}</small>
                 </td>
                 <td>

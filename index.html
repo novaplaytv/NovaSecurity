@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -25,7 +25,7 @@
         * { box-sizing: border-box; outline: none; margin: 0; padding: 0; }
         html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow: hidden; -webkit-font-smoothing: antialiased; }
 
-        /* Navegación Premium (Igual a panel-canales) */
+        /* NavegaciÃ³n Premium (Igual a panel-canales) */
         .nova-nav { position: fixed; top: 0; width: 100%; z-index: 10000; background: rgba(0,0,0,0.7); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
         .nav-inner { max-width: 1400px; margin: auto; height: var(--nav-height); padding: 0 30px; display: flex; align-items: center; justify-content: space-between; }
         .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; font-weight: 900; font-size: 22px; letter-spacing: -1px; }
@@ -52,7 +52,7 @@
         .btn-login-nav:hover, .btn-logout:hover { transform: scale(1.05); background: var(--primary-hover); }
         .btn-logout { background: var(--error); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
 
-        /* Dropdown de Administración Premium - FIX DEFINITIVO */
+        /* Dropdown de AdministraciÃ³n Premium - FIX DEFINITIVO */
         .admin-menu { position: relative; display: none; padding: 10px 0; margin: -10px 0; }
         .btn-admin { background: #fff; color: #000; font-weight: 900; border: none; cursor: pointer; padding: 10px 20px; border-radius: 12px; font-size: 13px; display: flex; align-items: center; gap: 10px; transition: 0.2s; position: relative; z-index: 10002; }
         .btn-admin:hover { background: var(--primary); color: #fff; box-shadow: 0 0 20px rgba(229,9,20,0.4); }
@@ -156,9 +156,9 @@
                     <a href="https://novaplaytv.github.io/Dashboard/"><i class="fas fa-chart-line"></i> Dashboard Central</a>
                     <a href="https://novaplaytv.github.io/panel-canales/"><i class="fas fa-tv"></i> Admin. Canales</a>
                     <a href="https://novaplaytv.github.io/NovaSecurity/"><i class="fas fa-shield-alt"></i> NovaSecurity</a>
-                    <a href="https://novaplaytv.github.io/SignalVerificador/"><i class="fas fa-broadcast-tower"></i> Verificador de Señal</a>
-                    <a href="https://novaplaytv.github.io/novaimg/"><i class="fas fa-icons"></i> Gestión de Iconos</a>
-                    <a href="#" onclick="cerrarSesion(); return false;" class="logout-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                    <a href="https://novaplaytv.github.io/SignalVerificador/"><i class="fas fa-broadcast-tower"></i> Verificador de SeÃ±al</a>
+                    <a href="https://novaplaytv.github.io/novaimg/"><i class="fas fa-icons"></i> GestiÃ³n de Iconos</a>
+                    <a href="#" onclick="cerrarSesion(); return false;" class="logout-link"><i class="fas fa-sign-out-alt"></i> Cerrar SesiÃ³n</a>
                 </div>
             </div>
         </div>
@@ -173,8 +173,8 @@
             <input type="text" id="username" placeholder="Usuario Staff">
         </div>
         <div class="form-group" style="text-align: left; margin-bottom: 20px;">
-            <label style="display: block; margin-bottom: 8px; font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;">Contraseña</label>
-            <input type="password" id="password" placeholder="Contraseña">
+            <label style="display: block; margin-bottom: 8px; font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;">ContraseÃ±a</label>
+            <input type="password" id="password" placeholder="ContraseÃ±a">
         </div>
         <button class="btn btn-primary" id="loginButton" style="width:100%; justify-content:center; padding: 18px;" onclick="iniciarSesion()">ENTRAR AL PANEL</button>
         <div id="loginStatus" class="status"></div>
@@ -186,7 +186,7 @@
         <h2><i class="fas fa-bolt"></i> Sesiones en Tiempo Real</h2>
         <div class="table-container">
             <table>
-                <thead><tr><th>Usuario</th><th>ID Hardware</th><th>Firma Hardware</th><th>Modelo / App</th><th>Acción</th></tr></thead>
+                <thead><tr><th>Usuario</th><th>ID Hardware</th><th>Firma Hardware</th><th>Modelo / App</th><th>AcciÃ³n</th></tr></thead>
                 <tbody id="users-tbody"></tbody>
             </table>
         </div>
@@ -196,10 +196,10 @@
         <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
                 <h2 style="margin:0;"><i class="fas fa-user-slash"></i> Lista Negra</h2>
-                <button class="btn-danger-text" onclick="addBlacklist('')" style="font-size:10px; padding:8px 15px;">+ AÑADIR MANUAL</button>
+                <button class="btn-danger-text" onclick="addBlacklist('')" style="font-size:10px; padding:8px 15px;">+ AÃ‘ADIR MANUAL</button>
             </div>
             <div class="table-container">
-                <table><thead><tr><th>ID / Firma Baneada</th><th>Acción</th></tr></thead><tbody id="blacklist-tbody"></tbody></table>
+                <table><thead><tr><th>ID / Firma Baneada</th><th>AcciÃ³n</th></tr></thead><tbody id="blacklist-tbody"></tbody></table>
             </div>
         </div>
         <div class="card">
@@ -211,7 +211,7 @@
 <div class="nova-modal-overlay" id="novaModal">
     <div class="nova-modal">
         <h3 id="modalTitle">Confirmar</h3>
-        <p id="modalMessage">¿Deseas realizar esta acción?</p>
+        <p id="modalMessage">Â¿Deseas realizar esta acciÃ³n?</p>
         <div id="modalInputContainer" class="hidden">
             <input type="text" id="modalInput" placeholder="...">
         </div>
@@ -226,8 +226,8 @@
 
 <footer>
     <div class="footer-text">
-        © 2026 NOVAPLAY TV<br>
-        © 2010 - 2026 - MSGT. TODOS LOS DERECHOS RESERVADOS
+        Â© 2026 NOVAPLAY TV<br>
+        Â© 2010 - 2026 - MSGT. TODOS LOS DERECHOS RESERVADOS
     </div>
 </footer>
 
@@ -238,7 +238,7 @@
     function novaToast(message) {
         const toast = document.createElement("div");
         toast.style.cssText = "position:fixed; bottom:20px; right:20px; background:rgba(16,185,129,0.9); color:white; padding:15px 25px; border-radius:12px; font-weight:800; z-index:10000; animation: toast-in 0.4s ease;";
-        toast.textContent = "✔ " + message;
+        toast.textContent = "âœ” " + message;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
     }
@@ -373,7 +373,7 @@
     }
 
     async function deleteLog(name) {
-        openModal("Eliminar Reporte", `¿Estás seguro de eliminar permanentemente el reporte "${name}"?`, async () => {
+        openModal("Eliminar Reporte", `Â¿EstÃ¡s seguro de eliminar permanentemente el reporte "${name}"?`, async () => {
             const res = await req({ action: "seguridad_eliminar_log", name: name });
             if (res.success) {
                 novaToast("Reporte eliminado correctamente");
@@ -414,7 +414,7 @@
     }
 
     async function removeBlacklist(id) {
-        openModal("Desbloquear", "¿Deseas sacar este dispositivo de la lista negra?", async () => {
+        openModal("Desbloquear", "Â¿Deseas sacar este dispositivo de la lista negra?", async () => {
             const res = await req({ action: "seguridad_remove_blacklist", id_db: id });
             if (res.success) {
                 novaToast("Dispositivo desbloqueado");

@@ -21,8 +21,8 @@ def update_devices():
 
     devices = {}
 
-    # Marcas prioritarias para NovaPlay
-    marcas_interes = ["Xiaomi", "Samsung", "Motorola", "Google", "OPPO", "Sony", "Realme", "OnePlus", "Vivo", "Poco", "Redmi"]
+    # Filtrar estrictamente por Xiaomi y Samsung (incluye Poco y Redmi)
+    marcas_interes = ["Xiaomi", "Samsung", "Poco", "Redmi"]
 
     print("Procesando modelos...")
     for row in reader:
@@ -32,6 +32,10 @@ def update_devices():
         model = row.get('Model', '')
 
         if not model or not marketing_name:
+            continue
+
+        # Validar que pertenezca a las marcas de interés
+        if not any(m.lower() in brand.lower() or m.lower() in marketing_name.lower() for m in marcas_interes):
             continue
 
         # Si el modelo ya existe y tiene nombre comercial, no sobreescribir con algo genérico

@@ -111,7 +111,7 @@
         /* Login */
         #auth-view { position: fixed; inset: 0; background: var(--bg); z-index: 10001; display: flex; justify-content: center; align-items: center; }
         .auth-card { width: 400px; padding: 50px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 35px; text-align: center; box-shadow: 0 30px 80px rgba(0,0,0,0.6); }
-        .auth-card input { width: 100%; padding: 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 14px; color: #fff; margin-bottom: 15px; font-size: 15px; }
+        .auth-card input { width: 100%; padding: 15px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; color: #fff; margin-bottom: 15px; font-size: 15px; }
         .status { margin-top: 15px; padding: 14px; border-radius: 12px; font-size: 13px; font-weight: 800; display: none; text-align: center; }
         .status.error { background: rgba(239,68,68,0.1); color: var(--error); border: 1px solid var(--error); }
 
@@ -174,21 +174,21 @@
     </div>
 </nav>
 
-    <div id="auth-view" class="hidden">
-        <div class="auth-card">
-            <h2 style="margin-bottom:30px; font-weight:900; font-size: 28px;">Acceso al Panel</h2>
-            <div class="form-group" style="text-align: left; margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 8px; font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;">Usuario</label>
-                <input type="text" id="username" placeholder="Usuario Staff">
-            </div>
-            <div class="form-group" style="text-align: left; margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 8px; font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;">Contraseña</label>
-                <input type="password" id="password" placeholder="••••••••">
-            </div>
-            <button class="btn btn-primary" id="loginButton" style="width:100%; justify-content:center; padding: 18px; border-radius: 14px; font-weight: 900;" onclick="iniciarSesion()">ENTRAR A NOVASECURITY</button>
-            <div id="loginStatus" class="status"></div>
+<div id="auth-view" class="hidden">
+    <div class="auth-card">
+        <h2 style="margin-bottom:30px; font-weight:900; font-size: 28px;">Acceso al Panel</h2>
+        <div class="form-group" style="text-align: left; margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;">Usuario</label>
+            <input type="text" id="username" placeholder="Usuario Staff">
         </div>
+        <div class="form-group" style="text-align: left; margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;">Contraseña</label>
+            <input type="password" id="password" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" id="loginButton" style="width:100%; justify-content:center; padding: 18px; border-radius: 14px; font-weight: 900;" onclick="iniciarSesion()">ENTRAR A NOVASECURITY</button>
+        <div id="loginStatus" class="status"></div>
     </div>
+</div>
 
 <div class="app-container hidden" id="main-panel">
     <div class="card">
@@ -212,25 +212,24 @@
             </div>
         </div>
         <div class="card">
-        <h2><i class="fas fa-file-medical-alt"></i> Reportes de Emergencia</h2>
-        <div id="logs-container" class="logs-grid" style="overflow-y:auto; max-height:400px;"></div>
+            <h2><i class="fas fa-file-medical-alt"></i> Reportes de Emergencia</h2>
+            <div id="logs-container" class="logs-grid" style="overflow-y:auto; max-height:400px;"></div>
+        </div>
     </div>
 </div>
 
-    <div class="nova-modal-overlay" id="novaModal">
-        <div class="nova-modal">
-            <h3 id="novaModalTitle" style="font-weight:900;">Confirmar</h3>
-            <p id="novaModalMessage" style="color: var(--text-muted); margin-bottom: 25px; line-height: 1.5;"></p>
-            <div id="modalInputContainer" class="hidden">
-                <input type="text" id="modalInput" placeholder="...">
-                <select id="modalSelect" class="hidden"></select>
-            </div>
-            <div class="nova-modal-btns">
-                <button class="nova-modal-btn btn-cancel" id="novaModalCancel">CANCELAR</button>
-                <button class="nova-modal-btn btn-confirm" id="novaModalConfirm">ACEPTAR</button>
-            </div>
+<div class="nova-modal-overlay" id="novaModal">
+    <div class="nova-modal">
+        <h3 id="novaModalTitle" style="font-weight:900;">Confirmar</h3>
+        <p id="novaModalMessage" style="color: var(--text-muted); margin-bottom: 25px; line-height: 1.5;"></p>
+        <div id="modalInputContainer" class="hidden">
+            <input type="text" id="modalInput" placeholder="...">
+            <select id="modalSelect" class="hidden"></select>
         </div>
-    </div>
+        <div class="nova-modal-btns">
+            <button class="nova-modal-btn btn-cancel" id="novaModalCancel">CANCELAR</button>
+            <button class="nova-modal-btn btn-confirm" id="novaModalConfirm">ACEPTAR</button>
+        </div>
     </div>
 </div>
 
@@ -449,32 +448,6 @@
         } catch (e) { alert("Error al descargar"); }
     }
 
-    function openModal(title, msg, onConfirm, isPrompt = false, defaultValue = "") {
-        const m = document.getElementById("novaModal");
-        document.getElementById("modalTitle").innerText = title;
-        document.getElementById("modalMessage").innerText = msg;
-        const inputContainer = document.getElementById("modalInputContainer");
-        const input = document.getElementById("modalInput");
-
-        if (isPrompt) {
-            inputContainer.classList.remove("hidden");
-            input.value = defaultValue;
-            setTimeout(() => input.focus(), 100);
-        } else {
-            inputContainer.classList.add("hidden");
-        }
-
-        m.style.display = "flex";
-
-        const close = () => { m.style.display = "none"; };
-        document.getElementById("modalCancel").onclick = close;
-        document.getElementById("modalConfirm").onclick = () => {
-            if (isPrompt) onConfirm(input.value);
-            else onConfirm();
-            close();
-        };
-    }
-
     async function deleteLog(name) {
         openModal("Eliminar Reporte", `¿Estás seguro de eliminar permanentemente el reporte "${name}"?`, async () => {
             const res = await req({ action: "seguridad_eliminar_log", name: name });
@@ -500,9 +473,9 @@
                             novaToast("Dispositivo bloqueado");
                             loadData();
                         } else alert("Error");
-                    }, true, "Actividad sospechosa detectada.");
+                    }, "prompt", "Actividad sospechosa detectada.");
                 }, 300);
-            }, true, "");
+            }, "prompt", "");
             return;
         }
 
@@ -513,7 +486,7 @@
                 novaToast("Dispositivo bloqueado");
                 loadData();
             } else alert("Error");
-        }, true, "Actividad sospechosa detectada.");
+        }, "prompt", "Actividad sospechosa detectada.");
     }
 
     async function removeBlacklist(id) {

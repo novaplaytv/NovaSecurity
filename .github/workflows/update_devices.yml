@@ -5,6 +5,10 @@ on:
     - cron: '0 0 * * 0' # Todos los domingos a medianoche
   workflow_dispatch: # Permite ejecución manual
 
+concurrency:
+  group: novasecurity-sync
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -35,5 +39,5 @@ jobs:
             echo "No se detectaron cambios en el diccionario de dispositivos."
           else
             git commit -m "System: Actualizar diccionario de dispositivos (Google Play List)"
-            git push
+            git push || (git pull --rebase && git push)
           fi

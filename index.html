@@ -28,7 +28,7 @@
         * { box-sizing: border-box; outline: none; margin: 0; padding: 0; }
         html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow: hidden; -webkit-font-smoothing: antialiased; }
 
-        /* Navegación Premium (Igual a panel-canales) */
+        /* NavegaciÃ³n Premium (Igual a panel-canales) */
         .nova-nav { position: fixed; top: 0; width: 100%; z-index: 10000; background: rgba(0,0,0,0.7); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
         .nav-inner { max-width: 1400px; margin: auto; height: var(--nav-height); padding: 0 30px; display: flex; align-items: center; justify-content: space-between; }
         .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; font-weight: 900; font-size: 22px; letter-spacing: -1px; }
@@ -57,7 +57,7 @@
 
         .nav-toggle { display: none; }
 
-        /* Dropdown de Administración Premium - FIX DEFINITIVO */
+        /* Dropdown de AdministraciÃ³n Premium - FIX DEFINITIVO */
         .admin-menu { position: relative; display: none; align-items: center; height: var(--nav-height); padding: 0 10px; }
         .btn-admin { background: #fff; color: #000; font-weight: 900; border: none; cursor: pointer; padding: 10px 20px; border-radius: 12px; font-size: 13px; display: flex; align-items: center; gap: 10px; transition: 0.2s; position: relative; z-index: 10002; }
         .btn-admin:hover { background: var(--primary); color: #fff; box-shadow: 0 0 20px rgba(229,9,20,0.4); }
@@ -113,7 +113,7 @@
         /* Login */
         #auth-view { position: fixed; inset: 0; background: var(--bg); z-index: 10001; display: flex; justify-content: center; align-items: center; }
         .auth-card { width: 400px; padding: 50px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 35px; text-align: center; box-shadow: 0 30px 80px rgba(0,0,0,0.6); }
-        .auth-card input { width: 100%; padding: 15px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; color: #fff; margin-bottom: 15px; font-size: 15px; }
+        .auth-card input { width: 100%; padding: 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; color: #fff; margin-bottom: 15px; font-size: 15px; }
         .status { margin-top: 15px; padding: 14px; border-radius: 12px; font-size: 13px; font-weight: 800; display: none; text-align: center; }
         .status.error { background: rgba(239,68,68,0.1); color: var(--error); border: 1px solid var(--error); }
 
@@ -161,7 +161,7 @@
             .nav-links.active { right: 0; }
             .nav-links a { font-size: 18px; width: 100%; text-align: center; padding: 15px; border-radius: 15px; }
 
-            /* Ajuste del botón PANEL en móvil */
+            /* Ajuste del botÃ³n PANEL en mÃ³vil */
             .admin-menu { width: 100%; height: auto; justify-content: center; padding: 0; flex-direction: column; }
             .admin-menu.active .dropdown-content { opacity: 1; visibility: visible; display: flex; }
             .btn-admin { width: 100%; justify-content: center; padding: 18px; font-size: 16px; border-radius: 15px; }
@@ -172,14 +172,14 @@
             .nav-toggle.active span:nth-child(2) { opacity: 0; }
             .nav-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-            /* Cards en móvil */
+            /* Cards en mÃ³vil */
             .app-container { padding: 20px 10px; gap: 20px; }
             .card { padding: 20px; border-radius: 20px; }
             div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
 
             .auth-card { width: 95%; padding: 30px 20px; border-radius: 25px; }
 
-            /* Tablas en móvil */
+            /* Tablas en mÃ³vil */
             .table-container { margin: 0 -10px; border-radius: 0; border-left: none; border-right: none; }
             td, th { padding: 10px 8px; font-size: 11px; }
 
@@ -206,14 +206,14 @@
                     <a href="https://novaplaytv.github.io/Dashboard/"><i class="fas fa-chart-line"></i> Dashboard Central</a>
                     <a href="https://novaplaytv.github.io/panel-canales/"><i class="fas fa-tv"></i> Admin. Canales</a>
                     <a href="https://novaplaytv.github.io/NovaSecurity/"><i class="fas fa-shield-alt"></i> NovaSecurity</a>
-                    <a href="https://novaplaytv.github.io/SignalVerificador/"><i class="fas fa-broadcast-tower"></i> Verificador de Señal</a>
-                    <a href="https://novaplaytv.github.io/novaimg/actualizar-icono/"><i class="fas fa-icons"></i> Gestión de Iconos</a>
+                    <a href="https://novaplaytv.github.io/SignalVerificador/"><i class="fas fa-broadcast-tower"></i> Verificador de SeÃ±al</a>
+                    <a href="https://novaplaytv.github.io/novaimg/actualizar-icono/"><i class="fas fa-icons"></i> GestiÃ³n de Iconos</a>
                     <a href="https://novaplaytv.github.io/novaimg/generador/"><i class="fas fa-magic"></i> Icon Studio</a>
-                    <a href="#" onclick="cerrarSesion(); return false;" class="logout-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                    <a href="#" onclick="cerrarSesion(); return false;" class="logout-link"><i class="fas fa-sign-out-alt"></i> Cerrar SesiÃ³n</a>
                 </div>
             </div>
         </div>
-        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menÃº">
             <span></span>
             <span></span>
             <span></span>
@@ -229,8 +229,8 @@
             <input type="text" id="username" placeholder="Usuario Staff">
         </div>
         <div class="form-group" style="text-align: left; margin-bottom: 20px;">
-            <label style="display: block; margin-bottom: 8px; font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;">Contraseña</label>
-            <input type="password" id="password" placeholder="••••••••">
+            <label style="display: block; margin-bottom: 8px; font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;">ContraseÃ±a</label>
+            <input type="password" id="password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
         </div>
         <button class="btn btn-primary" id="loginButton" style="width:100%; justify-content:center; padding: 18px; border-radius: 14px; font-weight: 900;" onclick="iniciarSesion()">ENTRAR A NOVASECURITY</button>
         <div id="loginStatus" class="status"></div>
@@ -242,7 +242,7 @@
         <h2><i class="fas fa-bolt"></i> Sesiones en Tiempo Real</h2>
         <div class="table-container">
             <table>
-                <thead><tr><th>Usuario</th><th>ID Hardware</th><th>Firma Hardware</th><th>Modelo / App</th><th>Acción</th></tr></thead>
+                <thead><tr><th>Usuario</th><th>ID Hardware</th><th>Firma Hardware</th><th>Modelo / App</th><th>AcciÃ³n</th></tr></thead>
                 <tbody id="users-tbody"></tbody>
             </table>
         </div>
@@ -252,10 +252,10 @@
         <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
                 <h2 style="margin:0;"><i class="fas fa-user-slash"></i> Lista Negra</h2>
-                <button class="btn-danger-text" onclick="addBlacklist('')" style="font-size:10px; padding:8px 15px;">+ AÑADIR MANUAL</button>
+                <button class="btn-danger-text" onclick="addBlacklist('')" style="font-size:10px; padding:8px 15px;">+ AÃ‘ADIR MANUAL</button>
             </div>
             <div class="table-container">
-                <table><thead><tr><th>ID / Firma Baneada</th><th>Acción</th></tr></thead><tbody id="blacklist-tbody"></tbody></table>
+                <table><thead><tr><th>ID / Firma Baneada</th><th>AcciÃ³n</th></tr></thead><tbody id="blacklist-tbody"></tbody></table>
             </div>
         </div>
         <div class="card">
@@ -282,8 +282,8 @@
 
 <footer>
     <div class="footer-text">
-        © 2026 NOVAPLAY TV<br>
-        © 2010 - 2026 - NOVAPLAY TV. TODOS LOS DERECHOS RESERVADOS
+        Â© 2026 NOVAPLAY TV<br>
+        Â© 2010 - 2026 - NOVAPLAY TV. TODOS LOS DERECHOS RESERVADOS
     </div>
 </footer>
 
@@ -304,12 +304,12 @@
         // Buscar en el diccionario (Filtrado para Xiaomi/Samsung)
         if (deviceDict[cod]) return deviceDict[cod];
 
-        // Identificar Xiaomi por patrones conocidos (Códigos que terminan en G, C, I o empiezan por M2)
+        // Identificar Xiaomi por patrones conocidos (CÃ³digos que terminan en G, C, I o empiezan por M2)
         if (/^[0-9]{2,}[A-Z]{2,}[0-9]+[GCI]$/.test(cod) || cod.startsWith("M2")) {
             return "Xiaomi (" + cod + ")";
         }
 
-        // Identificar Samsung por patrones conocidos (Códigos SM-)
+        // Identificar Samsung por patrones conocidos (CÃ³digos SM-)
         if (cod.startsWith("SM-")) {
             return "Samsung (" + cod + ")";
         }
@@ -320,7 +320,7 @@
     function novaToast(message) {
         const toast = document.createElement("div");
         toast.style.cssText = "position:fixed; bottom:20px; right:20px; background:rgba(16,185,129,0.9); color:white; padding:15px 25px; border-radius:12px; font-weight:800; z-index:10000; animation: toast-in 0.4s ease;";
-        toast.textContent = "? " + message;
+        toast.textContent = "âœ… " + message;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
     }
@@ -373,7 +373,7 @@
     }
 
     function cerrarSesion() {
-        openModal("Cerrar Sesión", "¿Estás seguro que deseas salir de NovaSecurity?", () => {
+        openModal("Cerrar SesiÃ³n", "Â¿EstÃ¡s seguro que deseas salir de NovaSecurity?", () => {
             localStorage.removeItem("novaplay_session_token");
             location.reload();
         });
@@ -432,7 +432,7 @@
 
         let users = usersRes;
 
-        // Ordenar por Versión (Semántico: más nuevas primero)
+        // Ordenar por VersiÃ³n (SemÃ¡ntico: mÃ¡s nuevas primero)
         if (Array.isArray(users)) {
             users.sort((a, b) => {
                 const vA = (a.version_app || "0").replace(/[^\d.]/g, '').split('.').map(Number);
@@ -500,7 +500,7 @@
     }
 
     async function deleteLog(name) {
-        openModal("Eliminar Reporte", `¿Estás seguro de eliminar permanentemente el reporte "${name}"?`, async () => {
+        openModal("Eliminar Reporte", `Â¿EstÃ¡s seguro de eliminar permanentemente el reporte "${name}"?`, async () => {
             const res = await req({ action: "seguridad_eliminar_log", name: name });
             if (res.success) {
                 novaToast("Reporte eliminado correctamente");
@@ -541,7 +541,7 @@
     }
 
     async function removeBlacklist(id) {
-        openModal("Desbloquear", "¿Deseas sacar este dispositivo de la lista negra?", async () => {
+        openModal("Desbloquear", "Â¿Deseas sacar este dispositivo de la lista negra?", async () => {
             const res = await req({ action: "seguridad_remove_blacklist", id_db: id });
             if (res.success) {
                 novaToast("Dispositivo desbloqueado");
@@ -550,7 +550,7 @@
         });
     }
 
-    // Toggle Menú Móvil
+    // Toggle MenÃº MÃ³vil
     const navToggle = document.getElementById('navToggle');
     const navLinks = document.getElementById('navLinks');
     const adminMenu = document.getElementById('adminMenu');
@@ -563,7 +563,7 @@
         });
     }
 
-    // Toggle Dropdown en Móvil
+    // Toggle Dropdown en MÃ³vil
     if (btnAdmin) {
         btnAdmin.addEventListener('click', (e) => {
             if (window.innerWidth <= 900) {
@@ -573,7 +573,7 @@
         });
     }
 
-    // Cerrar menú al clickear link (móvil)
+    // Cerrar menÃº al clickear link (mÃ³vil)
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', () => {
             if (navToggle) navToggle.classList.remove('active');
